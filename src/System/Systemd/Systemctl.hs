@@ -66,18 +66,38 @@ systemctlSh a f u = do
   run "systemctl" prms
 
 -- | Restart a `Unit`
+--
+-- Calls @systemctl restart@
 restart :: MonadIO m => Unit -> m ()
 restart = void . systemctl "restart" []
 
 -- | Start a `Unit`
+--
+-- Calls @systemctl start@
 start :: MonadIO m => Unit -> m ()
 start = void . systemctl "start" []
 
 -- | Stop a `Unit`
+--
+-- Calls @systemctl stop@
 stop :: MonadIO m => Unit -> m ()
 stop = void . systemctl "stop" []
 
+-- | Enable a `Unit`
+--
+-- Calls @systemctl enable@
+enable :: MonadIO m => Unit -> m ()
+enable = void . systemctl "enable" []
+
+-- | Disable a `Unit`
+--
+-- Calls @systemctl disable@
+disable :: MonadIO m => Unit -> m ()
+disable = void . systemctl "disable" []
+
 -- | Check if a `Unit` is active.
+--
+-- Calls @systemctl is-active@
 isActive :: MonadIO m => Unit -> m Bool
 isActive u = shelly $ errExit False $ do
   void $ systemctlSh "is-active" ["--quiet"] u
