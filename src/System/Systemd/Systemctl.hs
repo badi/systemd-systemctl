@@ -6,7 +6,7 @@ module System.Systemd.Systemctl (
   service, target,
 
   -- * Actions
-  start, stop, restart, enable, disable,
+  start, stop, restart, reload, enable, disable,
 
   -- * Queries
   isActive, isFailed, isEnabled, System.Systemd.Systemctl.show,
@@ -87,6 +87,12 @@ systemctlSh :: Action -> [Flag] -> Unit -> Sh Text
 systemctlSh a f u = do
   let prms = systemctlParams u a f
   run "systemctl" prms
+
+-- | Reloads a `Unit`
+--
+-- Calls @systemctl reload@
+reload :: MonadIO m => Unit -> m ()
+reload = void . systemctl "reload" []
 
 -- | Restart a `Unit`
 --
