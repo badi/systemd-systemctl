@@ -1,6 +1,29 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module System.Systemd.Systemctl where
+module System.Systemd.Systemctl (
+
+  -- * Constructors
+  service, target,
+
+  -- * Actions
+  start, stop, restart, enable, disable,
+
+  -- * Queries
+  isActive, isFailed, isEnabled, System.Systemd.Systemctl.show,
+
+  -- * Internal
+
+  -- | This internal API is unstable.
+
+  -- ** Types
+
+  Name, Unit(..), Service(..), Target(..), Action, Flag,
+  unitName,
+
+  -- ** Commands
+  systemctl, systemctlSh, systemctlParams,
+
+  ) where
 
 import           Control.Monad
 import           Control.Monad.Trans
