@@ -104,6 +104,8 @@ isActive u = shelly $ errExit False $ do
   (0 ==) <$> lastExitCode
 
 -- | Check if a `Unit` is failed.
+--
+-- Calls @systemctl is-failed@
 isFailed :: MonadIO m => Unit -> m Bool
 isFailed u = shelly $ errExit False $ do
   void $ systemctlSh "is-failed" ["--quiet"] u
@@ -122,7 +124,9 @@ isEnabled u = shelly $ errExit False $ print_stdout False $ do
   let enabled = str `elem` ["enabled", "enabled-runtime"]
   return $ enabled && exitCode == 0
 
--- | Call @systemctl show <unit>@
+-- | Show all the properties of a `Unit`
+--
+-- Calls @systemctl show@
 show :: MonadIO m => Unit -> m (HashMap Text Text)
 show u = do
   status_lines <- T.lines <$> systemctl "show" [] u
